@@ -2,7 +2,7 @@
 
 from dłużnicy import Dłużnicy
 from decimal import Decimal
-from dane.zjazd2022 import uczestnicy, dni, transfery, opłaty
+from dane.zjazd2024 import uczestnicy, transfery, opłaty
 
 
 dłużnicy = Dłużnicy(uczestnicy)
@@ -13,10 +13,11 @@ for transfer in transfery:
 for opłata in opłaty:
     if type(opłata.od) == list:
         if opłata.proporcjonalnie:
-            suma_dni = Decimal(sum([dni[uczestnik] for uczestnik in opłata.od]))
+            prop = opłata.proporcjonalnie
+            suma_prop = Decimal(sum([prop[uczestnik] for uczestnik in opłata.od]))
 
             for uczestnik in opłata.od:
-                suma = (dni[uczestnik] / suma_dni) * opłata.ile
+                suma = (prop[uczestnik] / suma_prop) * opłata.ile
                 dłużnicy.dług(uczestnik, opłata.do, suma)
         else:
             na_każdego = opłata.ile / len(opłata.od)
